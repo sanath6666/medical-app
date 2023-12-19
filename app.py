@@ -1,32 +1,36 @@
-pip install streamlit openai
 import streamlit as st
-import openai
+import pyttsx3
+import pandas as pd
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.model_selection import train_test_split
 
-# Configure your OpenAI API key
-api_key = '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'
-openai.api_key = api_key
+# Your existing code for data loading and model building
+# ...
 
-def get_openai_response(user_input):
-    response = openai.Completion.create(
-        engine="text-davinci-003",
-        prompt=user_input,
-        max_tokens=100  # Adjust the number of tokens for the response length
-    )
-    return response.choices[0].text.strip()
+# Function to get severity dictionary, description list, and precaution dictionary from CSV files
+# ...
 
+# Function to handle the chatbot logic
+def handle_chatbot():
+    st.write("-----------------------------------HealthCare ChatBot-----------------------------------")
+    st.write("\nYour Name?")
+    name = st.text_input("", "")
+    st.write(f"Hello, {name}")
+    
+    st.write("\nEnter the symptom you are experiencing:")
+    disease_input = st.text_input("", "")
+    num_days = st.number_input("From how many days?", min_value=1, step=1)
+
+    # Existing logic for the chatbot function
+    # ...
+
+    # Output the results
+    st.write("----------------------------------------------------------------------------------------")
+
+# Create the Streamlit app
 def main():
     st.title("Medical AI Chatbot")
-
-    st.write("Welcome! Ask me any medical-related questions.")
-
-    user_input = st.text_input("You:", "")
-
-    if st.button("Ask"):
-        if user_input:
-            chatbot_response = get_openai_response(user_input)
-            st.text_area("Chatbot:", chatbot_response)
-        else:
-            st.warning("Please enter a question.")
+    handle_chatbot()
 
 if __name__ == "__main__":
     main()
