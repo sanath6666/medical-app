@@ -1,35 +1,43 @@
 import streamlit as st
 
+# Dictionary to store symptoms and possible diseases
+symptom_diseases = {
+    'cough': ['Common cold', 'Flu', 'Pneumonia'],
+    'fever': ['Flu', 'COVID-19', 'Malaria'],
+    # Add more symptoms and related diseases here
+}
 
-# Your existing code for data loading and model building
-# ...
-
-# Function to get severity dictionary, description list, and precaution dictionary from CSV files
-# ...
-
-# Function to handle the chatbot logic
-def handle_chatbot():
-    st.write("-----------------------------------HealthCare ChatBot-----------------------------------")
-    st.write("\nYour Name?")
-    name = st.text_input("", "")
-    st.write(f"Hello, {name}")
+def symptom_checker(symptoms):
+    possible_diseases = []
+    for symptom in symptoms:
+        if symptom in symptom_diseases:
+            possible_diseases.extend(symptom_diseases[symptom])
     
-    st.write("\nEnter the symptom you are experiencing:")
-    disease_input = st.text_input("", "")
-    num_days = st.number_input("From how many days?", min_value=1, step=1)
+    return list(set(possible_diseases))
 
-    # Existing logic for the chatbot function
-    # ...
-
-    # Output the results
-    st.write("----------------------------------------------------------------------------------------")
-
-# Create the Streamlit app
 def main():
-    st.title("Medical AI Chatbot")
-    handle_chatbot()
+    st.title('Healthcare Chatbot')
+    st.write("Welcome! I'm here to help you with your health concerns.")
+
+    # Sidebar for user input
+    with st.sidebar:
+        st.header('Symptom Checker')
+        st.write('Enter your symptoms (comma-separated):')
+        user_input = st.text_input('Example: cough, fever')
+
+    if st.button('Check'):
+        if user_input:
+            symptoms = [s.strip().lower() for s in user_input.split(',')]
+            possible_diseases = symptom_checker(symptoms)
+            if possible_diseases:
+                st.success(f"Possible diseases based on symptoms: {', '.join(possible_diseases)}")
+            else:
+                st.warning('No diseases found based on provided symptoms.')
+        else:
+            st.warning('Please enter some symptoms.')
 
 if __name__ == "__main__":
     main()
+
 
 
